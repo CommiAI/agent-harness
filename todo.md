@@ -4,3 +4,4 @@
 - Understand how to do code review efficiently
 - Let model verify its work via browser 
 - Identify stucked iteration that takes up a lot of time
+- Adding dependencies usually does not goes through proper cli command, hence does not get latest version
