@@ -1,0 +1,23 @@
+{
+  "name": "commi",
+  "owner": {
+    "name": "CommiAI"
+  },
+  "metadata": {
+    "description": "Agent harness",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "agent-harness",
+      "source": "./",
+      "description": "Agent harness",
+      "version": "1.0.0",
+      "author": {
+        "name": "CommiAI"
+      },
+      "repository": "https://github.com/CommiAI/agent-harness",
+      "license": "MIT"
+    }
+  ]
+}

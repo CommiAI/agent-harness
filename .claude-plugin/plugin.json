@@ -1,12 +1,10 @@
 {
-  "name": "rpi",
-  "description": "Research-Plan-Implement workflow for Linear tickets.",
-  "version": "0.13.1",
+  "name": "agent-harness",
+  "description": "Agent harness",
+  "version": "1.0.0",
   "author": {
-    "name": "HumanLayer",
-    "email": "support@humanlayer.dev"
+    "name": "CommiAI"
   },
-  "repository": "https://github.com/humanlayer/riptide-rpi",
-  "license": "All Rights Reserved",
-  "keywords": ["linear", "planning", "rpi", "thoughts", "humanlayer", "research", "codelayer", "riptide", "plan", "implement"]
+  "repository": "https://github.com/CommiAI/agent-harness",
+  "license": "MIT"
 }
