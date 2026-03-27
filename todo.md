@@ -6,3 +6,4 @@
 - Identify stucked iteration that takes up a lot of time
 - Adding dependencies usually does not goes through proper cli command, hence does not get latest version
 - Add debugging workflow instead of headless debugging
+- Instead of manual RPI, test long running workflow + code review style implementation
