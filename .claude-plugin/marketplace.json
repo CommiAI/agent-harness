@@ -5,14 +5,14 @@
   },
   "metadata": {
     "description": "Agent harness",
-    "version": "1.0.1"
+    "version": "1.0.2"
   },
   "plugins": [
     {
       "name": "agent-harness",
       "source": "./",
       "description": "Agent harness",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "author": {
         "name": "CommiAI"
       },
