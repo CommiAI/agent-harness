@@ -1,3 +1,17 @@
 {
-  "hooks": {}
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "if": "Bash(git commit*)",
+            "command": "INPUT=$(cat); CMD=$(echo \"$INPUT\" | jq -r '.tool_input.command // \"\"'); if echo \"$CMD\" | grep -qE '(^|[[:space:]])--no-verify([[:space:]]|$)'; then echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"deny\",\"permissionDecisionReason\":\"Blocked: --no-verify is not allowed. Pre-commit hooks must always run.\"}}'; fi",
+            "statusMessage": "Verifying commit flags..."
+          }
+        ]
+      }
+    ]
+  }
 }
