@@ -1,2 +1,7 @@
 .DS_Store
 .claude/settings.local.json
+.claude/qa.md
+qa-report/
+
+# Riptide artifacts (cloud-synced)
+.humanlayer/tasks/

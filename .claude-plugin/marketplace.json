@@ -5,14 +5,14 @@
   },
   "metadata": {
     "description": "Agent harness",
-    "version": "1.0.3"
+    "version": "1.0.4"
   },
   "plugins": [
     {
-      "name": "agent-harness",
+      "name": "rpi-addon",
       "source": "./",
-      "description": "Agent harness",
-      "version": "1.0.3",
+      "description": "A series of add-ons onto the human-layer RPI workflow",
+      "version": "1.0.4",
       "author": {
         "name": "CommiAI"
       },

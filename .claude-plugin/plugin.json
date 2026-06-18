@@ -1,7 +1,7 @@
 {
-  "name": "agent-harness",
-  "description": "Agent harness",
-  "version": "1.0.3",
+  "name": "rpi-addon",
+  "description": "A series of add-ons onto the human-layer RPI workflow",
+  "version": "1.0.4",
   "author": {
     "name": "CommiAI"
   },
