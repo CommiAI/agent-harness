@@ -1,0 +1,10 @@
+/node_modules
+/.next
+/out
+*.tsbuildinfo
+next-env.d.ts
+.DS_Store
+
+# Generated per-repo wiki content lives here. It can describe private/internal
+# codebases, so it is kept out of version control — drop your own tree in.
+/content
