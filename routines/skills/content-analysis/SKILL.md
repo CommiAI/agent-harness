@@ -21,3 +21,5 @@ Generate the findings as an HTML report and save it to a file (e.g. `content-ana
 - Opportunities and ideas
 
 Present the report. If the batch is empty, say so briefly.
+
+Do not commit nor PR for the report it is a one of artifact for viewing.
