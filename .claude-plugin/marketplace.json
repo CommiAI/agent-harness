@@ -10,9 +10,20 @@
   "plugins": [
     {
       "name": "rpi-addon",
-      "source": "./",
+      "source": "./rpi-addon",
       "description": "A series of add-ons onto the human-layer RPI workflow",
       "version": "1.0.6",
+      "author": {
+        "name": "CommiAI"
+      },
+      "repository": "https://github.com/CommiAI/agent-harness",
+      "license": "MIT"
+    },
+    {
+      "name": "routines",
+      "source": "./routines",
+      "description": "Recurring inbox routines — daily email triage and monthly content analysis over a Waiting Analysis label",
+      "version": "1.0.0",
       "author": {
         "name": "CommiAI"
       },

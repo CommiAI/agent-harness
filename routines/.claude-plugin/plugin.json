@@ -1,0 +1,10 @@
+{
+  "name": "routines",
+  "description": "Recurring inbox routines — daily email triage and monthly content analysis over a Waiting Analysis label",
+  "version": "1.0.0",
+  "author": {
+    "name": "CommiAI"
+  },
+  "repository": "https://github.com/CommiAI/agent-harness",
+  "license": "MIT"
+}
