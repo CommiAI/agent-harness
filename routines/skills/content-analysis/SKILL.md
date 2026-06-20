@@ -20,4 +20,4 @@ Generate the findings as an HTML report and save it to a file (e.g. `content-ana
 - Shifts versus the previous batch
 - Opportunities and ideas
 
-When done, tell the user where the report was saved. If the batch is empty, say so briefly.
+Present the report. If the batch is empty, say so briefly.
