@@ -20,6 +20,4 @@ Generate the findings as an HTML report and save it to a file (e.g. `content-ana
 - Shifts versus the previous batch
 - Opportunities and ideas
 
-Present the report. If the batch is empty, say so briefly.
-
-Do not commit nor PR for the report it is a one of artifact for viewing.
+Present the report as a one-off artifact for viewing. If the batch is empty, say so briefly.
