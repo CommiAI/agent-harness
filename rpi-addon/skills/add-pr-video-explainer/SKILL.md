@@ -19,7 +19,7 @@ The generic PR-to-video baseline is the wrong shape for this skill. Build agains
 - **It is a TECHNICAL deep-dive, not a user-story sizzle reel.** This is the central rule. The audience is a technical reviewer who could read the PR — earn their attention by going *deeper* than the description, not by dramatizing a user's day. The spine is the architecture and the mechanism of the change, not a persona's journey. A high-level "user wanted X, so we shipped X, here it is working" arc is a failure mode: it tells them nothing they couldn't get from the title.
 - **Go as deep as `pr-walkthrough.html`.** Match the technical altitude of the walkthrough HTML: how the pieces fit together, what data flows where, why the design is shaped this way, and the real before/after code for the most important changes. Use actual snippets from the diff, not paraphrase.
 - **Still a coherent walkthrough, not a disconnected fact dump.** Depth does not mean a random reel of file lists and stat cards. Order the technical beats so each one builds on the last into one continuous explanation — the same logical progression a good code review follows.
-- **Must show a real flow — when one exists.** The payoff reuses the GIFs the `rpi-addon:qa` skill captured at the repo root: `qa-report/<flow>.gif` (frames in `qa-report/<flow>/NN-<step>.png`). This is verification that the architecture works end-to-end, not the centerpiece. Do not re-drive the app or fabricate behavior with abstract graphics. **If there are no QA GIFs, omit the UAT beat entirely** — never invent one.
+- **Must show a real flow — when one exists.** The payoff reuses the GIFs the `rpi-addon:qa` skill captured flat in the task directory: `.humanlayer/tasks/{task-slug}/qa-<flow>.gif`. This is verification that the architecture works end-to-end, not the centerpiece. Do not re-drive the app or fabricate behavior with abstract graphics. **If there are no QA GIFs, omit the UAT beat entirely** — never invent one.
 
 ## The walkthrough arc (the spine of the video)
 
@@ -37,7 +37,7 @@ The video is the watchable form of `pr-walkthrough.html`, so **reuse the walkthr
 1. **Locate the describe-pr and QA artifacts:**
    - Find the task directory: `.humanlayer/tasks/{task-slug}/` (or `.humanlayer/tasks/pr-{number}/`)
    - Read `pr-walkthrough.html` **in full** — its NODES (intro card, `why`/`principle`/`step`/`kept`/`verify`, before/after `.ba` pairs, inlined diffs) are the primary script source. Also read `pr-description.md` and any plan/ticket files for context.
-   - Check for QA GIFs at the repo root: `qa-report/<flow>.gif` — these feed the UAT payoff beat. If none exist, the UAT beat is omitted.
+   - Check for QA GIFs flat in the task directory: `.humanlayer/tasks/{task-slug}/qa-<flow>.gif` — these feed the UAT payoff beat. If none exist, the UAT beat is omitted.
 
 2. **Gather PR metadata:**
    - Reuse describe-pr's `gh pr view` data — title, number, url, commits, files. Skim the diff itself for the real before/after snippets you'll show on screen.

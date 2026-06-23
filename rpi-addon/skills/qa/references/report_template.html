@@ -1,65 +1,389 @@
 <!DOCTYPE html>
-<!--
-  QA report template for rpi-addon:qa.
-  The skill copies this to qa-report/index.html and replaces the markers:
-    {{TITLE}}    -> run title / project name
-    {{VERDICT}}  -> overall verdict, e.g. "3 passed · 1 failed"
-    {{SUMMARY}}  -> one-line summary
-    {{FLOWS}}    -> one .flow block per user flow (see the snippet below)
-  GIFs live beside this file (qa-report/<flow>.gif), so relative src works
-  when you open index.html in a browser.
-
-  Per-flow block to inject in place of {{FLOWS}}:
-
-    <section class="flow pass|warn|fail">
-      <h2><span class="badge">PASS</span> Flow name</h2>
-      <img src="<flow>.gif" alt="<flow>" loading="lazy">
-      <dl>
-        <dt>Verify</dt><dd>Expected outcome confirmed ✓</dd>
-        <dt>Notes</dt><dd>No console errors</dd>
-      </dl>
-    </section>
--->
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{TITLE}} — QA report</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{Project/Area} — QA Report</title>
+<!--
+  QA report artifact for rpi-addon:qa.
+
+  This is a SELF-CONTAINED inline HumanLayer artifact written FLAT into the task
+  directory (.humanlayer/tasks/{task-slug}/qa-report.html), beside its qa-<flow>.gif
+  evidence — the artifact system has no nested folders. Because it renders in the
+  cloud where relative file paths do not resolve, every flow GIF is base64-EMBEDDED
+  rather than linked. You do not hand-paste the base64 — fill the FLOWS array (with
+  a `gif:` key per flow, matching a qa-<flow>.gif basename), leave the `#gifs` stash
+  near the bottom EMPTY, then run:
+
+      ${CLAUDE_SKILL_DIR}/scripts/embed-qa-gifs.sh qa-report.html
+
+  It reads every `gif:` key out of FLOWS, base64-encodes the matching <key>.gif from
+  the report's own directory, and writes the stash. Re-run it freely after editing
+  FLOWS. After running it you MUST Read(qa-report.html, limit=1) so the artifact
+  store re-syncs the script's on-disk edit to the cloud (same rule as the PR walkthrough).
+
+  Replace ALL placeholder content with specifics from the real QA pass. Report
+  faithfully: give skipped or failed flows their own card with the reason. Scale
+  the number of flows to what you actually verified.
+
+  The <style> mirrors the PR walkthrough design system (packages/ui): poimandres
+  terminal palette, square corners, system-ui prose at weight 300, with IBM Plex
+  Mono reserved for code and chrome (buttons, badges, stats, status pills).
+  Keep it as-is so the QA report looks like the product.
+-->
 <style>
-  :root { color-scheme: dark; }
-  * { box-sizing: border-box; }
-  body { margin: 0; font: 15px/1.5 -apple-system, Segoe UI, Roboto, sans-serif;
-         background: #0e0f13; color: #e6e6e6; }
-  header { padding: 28px 32px; border-bottom: 1px solid #23252b; }
-  h1 { margin: 0 0 6px; font-size: 20px; }
-  .verdict { font-size: 14px; color: #9aa0aa; }
-  main { padding: 24px 32px; display: grid; gap: 24px;
-         grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); }
-  .flow { background: #15171d; border: 1px solid #23252b; border-radius: 12px;
-          padding: 16px; }
-  .flow h2 { margin: 0 0 12px; font-size: 15px; display: flex; align-items: center; gap: 10px; }
-  .flow img { width: 100%; border-radius: 8px; border: 1px solid #23252b; background: #000; }
-  .badge { font-size: 11px; font-weight: 700; letter-spacing: .04em;
-           padding: 2px 8px; border-radius: 999px; }
-  .pass  .badge { background: #16331f; color: #5ad17e; }
-  .warn  .badge { background: #36300f; color: #e7c84b; }
-  .fail  .badge { background: #3a1717; color: #f0716f; }
-  .pass  { border-left: 3px solid #5ad17e; }
-  .warn  { border-left: 3px solid #e7c84b; }
-  .fail  { border-left: 3px solid #f0716f; }
-  dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 12px 0 0; }
-  dt { color: #9aa0aa; }
-  dd { margin: 0; }
+  @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap");
+
+  /* poimandres terminal palette, square corners (radius 0 everywhere), prose at
+     weight 300 / generous line-height, IBM Plex Mono for code + chrome. Mirrors
+     the PR walkthrough so QA reports read as part of the same product. */
+  :root {
+    --bg: #1b1e28; --bg-deep: #171922; --bg-alt: #303340;
+    --row-hover: #717cb425; --row-open: #717cb418;
+    --border: #303340; --guide: #303340;
+    --text: #a6accd; --bright: #ffffff;
+    --muted: rgba(166, 172, 205, 0.55);
+    --accent: #add7ff; --accent-dim: rgba(173, 215, 255, 0.3);
+    --mint: #5de4c7; --yellow: #fffac2; --blue: #89ddff;
+    --rose: #d0679d; --pink: #f087bd;
+    --mono: "IBM Plex Mono", Consolas, Monaco, "Courier New", monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; border-radius: 0; }
+  ::selection { background: #717cb425; }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+  body {
+    background: var(--bg); color: var(--text); font-family: var(--sans); margin: 0;
+    font-size: 15px; font-weight: 300; line-height: 1.7; letter-spacing: 0.03em;
+    -webkit-font-smoothing: antialiased; scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+  }
+
+  #topbar {
+    position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    padding: 10px 22px; background: rgba(27,30,40,0.95); backdrop-filter: blur(6px); border-bottom: 1px solid var(--border);
+  }
+  #topbar h1 { font-family: var(--mono); font-size: 11.5px; margin: 0 10px 0 0; color: var(--accent); white-space: nowrap; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+  #topbar .sub { font-size: 12.5px; color: var(--muted); margin-right: auto; }
+  #topbar button {
+    background: rgba(173,215,255,0.125); color: var(--accent); border: 1px solid var(--accent);
+    font-family: var(--mono); font-size: 10.5px; font-weight: 500; padding: 5px 12px; cursor: pointer;
+    text-transform: uppercase; letter-spacing: 0.05em; transition: background 0.15s, color 0.15s;
+  }
+  #topbar button:hover { background: var(--accent); color: var(--bg); }
+  #topbar button:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(173,215,255,0.5); }
+
+  #wrap { max-width: 1120px; margin: 0 auto; padding: 26px 22px 120px; }
+
+  #intro { border: 1px solid var(--border); padding: 24px 28px 20px; margin-bottom: 24px; background: var(--bg-deep); }
+  #intro h2 { margin: 0 0 12px; font-size: 22px; color: var(--accent); font-weight: 600; letter-spacing: -0.02em; line-height: 1.3; }
+  #intro .verdict-line { font-family: var(--mono); font-size: 13px; letter-spacing: 0.02em; margin: 0 0 12px; color: var(--text); }
+  #intro .verdict-line .ok { color: var(--mint); } #intro .verdict-line .warn { color: var(--yellow); } #intro .verdict-line .bad { color: var(--rose); }
+  #intro p { color: var(--text); margin: 0 0 1em; max-width: 80ch; line-height: 1.9; }
+  #intro p:last-of-type { margin-bottom: 0; }
+  #intro p strong { color: var(--bright); font-weight: 600; }
+  .stat-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+  .stat {
+    background: var(--bg); border: 1px solid var(--border); padding: 8px 14px;
+    font-family: var(--mono); font-size: 9.5px; color: var(--muted); letter-spacing: 0.06em;
+    text-transform: uppercase; line-height: 1.6;
+  }
+  .stat b { display: block; font-size: 14px; font-weight: 500; color: var(--accent); text-transform: none; letter-spacing: 0; margin-bottom: 2px; }
+  .stat b.ok { color: var(--mint); } .stat b.warn { color: var(--yellow); } .stat b.bad { color: var(--rose); }
+
+  #legend { display: flex; gap: 7px; flex-wrap: wrap; margin: 0 0 16px; font-family: var(--mono); font-size: 10px; align-items: center; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* flow cards — same open/close node language as the PR walkthrough tree */
+  .flow { border: 1px solid var(--border); background: var(--bg-deep); margin-bottom: 12px; border-left: 3px solid var(--border); }
+  .flow.pass { border-left-color: var(--mint); }
+  .flow.warn { border-left-color: var(--yellow); }
+  .flow.fail { border-left-color: var(--rose); }
+  .flow > .row { display: flex; align-items: baseline; gap: 10px; padding: 12px 16px; cursor: pointer; user-select: none; }
+  .flow > .row:hover { background: var(--row-hover); }
+  .flow.open > .row { background: var(--row-open); border-bottom: 1px solid var(--border); }
+  .chev { flex: none; width: 13px; color: var(--muted); font-size: 9px; font-family: var(--mono); transition: transform 0.1s; transform: translateY(-1px); display: inline-block; }
+  .flow.open > .row .chev { transform: rotate(90deg); }
+  .flow .name { font-weight: 600; font-size: 16px; white-space: nowrap; color: var(--bright); letter-spacing: -0.01em; }
+  .summary-inline { color: var(--muted); font-size: 13px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+  .flow.open > .row .summary-inline { display: none; }
+
+  .content { display: none; padding: 16px 18px 20px; }
+  .flow.open > .content { display: block; }
+  .content .summary-full { color: var(--muted); font-size: 13.5px; margin: 0 0 14px; max-width: 84ch; line-height: 1.7; }
+
+  .gif-frame { margin: 0 0 16px; border: 1px solid var(--border); background: #000; }
+  .gif-frame img { display: block; width: 100%; }
+  .gif-frame .cap { font-family: var(--mono); font-size: 9.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; padding: 6px 10px; border-top: 1px solid var(--border); background: var(--bg-deep); }
+  .gif-missing { font-family: var(--mono); font-size: 11px; color: var(--muted); border: 1px dashed var(--border); padding: 14px; margin: 0 0 16px; text-align: center; }
+
+  /* steps checklist — one row per deliberate checkpoint */
+  .steps { font-family: var(--mono); font-size: 12px; line-height: 1.6; border: 1px solid var(--border); margin: 0 0 14px; }
+  .steps .step { display: grid; grid-template-columns: 22px 1fr; gap: 0 8px; padding: 8px 12px; border-top: 1px solid var(--border); }
+  .steps .step:first-child { border-top: none; }
+  .steps .glyph { font-weight: 700; text-align: center; }
+  .steps .glyph.pass { color: var(--mint); } .steps .glyph.warn { color: var(--yellow); } .steps .glyph.fail { color: var(--rose); }
+  .steps .do { color: var(--bright); }
+  .steps .expect { color: var(--muted); margin-top: 2px; }
+  .steps .expect b { color: var(--text); font-weight: 500; }
+  .steps .note { color: var(--yellow); margin-top: 2px; opacity: 0.85; }
+
+  .body { font-size: 14px; max-width: 80ch; line-height: 1.8; }
+  .body p { margin: 0.5em 0; } .body strong { color: var(--bright); font-weight: 600; }
+  .body ul { margin: 0.4em 0 0.8em; padding-left: 1.6em; } .body li { margin: 0; line-height: 1.8; }
+  .body li::marker { color: var(--muted); }
+  .body a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+  .body a:hover { color: var(--blue); }
+
+  .fix { border: 1px solid rgba(93,228,199,0.35); background: rgba(93,228,199,0.06); padding: 10px 14px; margin: 0 0 4px; font-size: 13.5px; line-height: 1.7; }
+  .fix .label { font-family: var(--mono); font-size: 9.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mint); display: block; margin-bottom: 4px; }
+  .fix code, .body code, .content code { font-family: var(--mono); font-size: 0.875em; background: var(--bg-alt); padding: 0.1em 0.35em 0; letter-spacing: normal; }
+
+  /* badges: 1px border + color/10 fill, solid fill marks a terminal fail */
+  .badge {
+    flex: none; font-family: var(--mono); font-size: 9px; font-weight: 600; letter-spacing: 0.08em; padding: 2px 7px;
+    text-transform: uppercase; border: 1px solid; transform: translateY(-1px);
+  }
+  .b-pass { color: var(--mint);   border-color: rgba(93,228,199,0.4);  background: rgba(93,228,199,0.1); }
+  .b-warn { color: var(--yellow); border-color: rgba(255,250,194,0.4); background: rgba(255,250,194,0.08); }
+  .b-fail { color: var(--bg);     border-color: var(--rose);           background: var(--rose); }
 </style>
 </head>
 <body>
-<header>
-  <h1>{{TITLE}} — QA report</h1>
-  <div class="verdict">{{VERDICT}}</div>
-  <div class="verdict">{{SUMMARY}}</div>
-</header>
-<main>
-{{FLOWS}}
-</main>
+
+<div id="topbar">
+  <h1>{project} · QA pass</h1>
+  <span class="sub">click any flow to expand its evidence · each frame is a checkpoint</span>
+  <button id="btn-expand-all">Expand all</button>
+  <button id="btn-collapse">Collapse all</button>
+</div>
+
+<div id="wrap">
+  <div id="intro">
+    <h2 id="intro-title">QA pass</h2>
+    <div class="verdict-line" id="verdict-line"></div>
+    <p id="intro-summary">{One or two sentences: what scope this QA pass covered and the overall outcome. Bold the <strong>headline result</strong>.}</p>
+    <div class="stat-row" id="stat-row"></div>
+  </div>
+
+  <div id="legend">
+    <span>verdict:</span>
+    <span class="badge b-pass">pass</span>
+    <span class="badge b-warn">warn</span>
+    <span class="badge b-fail">fail</span>
+  </div>
+
+  <div id="flows"></div>
+</div>
+
+<!-- ════════ GIF STASH ════════
+  Holds one <script type="text/plain" data-gif="<flow-key>"> per flow that has a
+  GIF, with that GIF's base64 bytes. DO NOT hand-fill this. Write it EXACTLY as
+  the empty two-line div below, then run scripts/embed-qa-gifs.sh — it reads every
+  `gif:` key out of FLOWS and base64-encodes the matching <key>.gif (sitting flat
+  beside this report in the task dir) into the blocks for you. The script wraps
+  what it generates between sentinel comments so re-runs stay idempotent. Edit
+  FLOWS and re-run; do not edit between the markers by hand. -->
+<div id="gifs" hidden>
+</div>
+
+<script>
+/* ════════ DATA — replace every flow with the real QA pass ════════
+   FLOWS shape: { verdict, name, summary, gif?, steps?, notes?, fix? }
+   - verdict: "pass" | "warn" | "fail"
+   - name:    short flow name
+   - summary: one line, shown inline when collapsed and as the lede when expanded
+   - gif:     a flow key matching a <script data-gif="…"> block in the #gifs stash
+              and a qa-<flow>.gif file beside this report. Omit for a skipped flow
+              with no evidence.
+   - steps:   the user flow as ordered checkpoints, each mapping to one GIF frame:
+              { do, expect, result: "pass"|"warn"|"fail", note? }
+   - notes:   HTML string — console state, env caveats, anything worth flagging
+   - fix:     HTML string — for a flow that failed then was auto-fixed: what broke,
+              where it was fixed (e.g. <code>file:line</code>), and that it re-verified
+*/
+const TITLE = "{Project/Area}";
+
+const FLOWS = [
+
+  { verdict: "pass", name: "{Flow name}",
+    summary: "{One line: what this flow proves and that it passed.}",
+    gif: "qa-{flow-key}",
+    steps: [
+      { do: "{What the user did}", expect: "{Expected outcome}", result: "pass" },
+      { do: "{Next action}", expect: "{Expected side effect, and where it was verified}", result: "pass" },
+    ],
+    notes: "{Optional: no console errors; verified against <code>{where}</code>.}" },
+
+  { verdict: "fail", name: "{Flow that failed then was fixed}",
+    summary: "{One line: what failed and that it was fixed + re-verified.}",
+    gif: "qa-{flow-key}",
+    steps: [
+      { do: "{Action}", expect: "{Expected outcome}", result: "fail", note: "{What actually happened}" },
+    ],
+    fix: "<span class=\"label\">Fixed</span>{What was broken} — corrected in <code>{file:line}</code>, re-ran the flow, now passes ✓" },
+
+  { verdict: "warn", name: "{Skipped or partial flow}",
+    summary: "{One line: why this was skipped or only partially verified.}",
+    notes: "{The reason — e.g. requires a credential not available in this environment.}" },
+
+];
+
+/* ════════ RENDER — keep as-is ════════ */
+function getGif(key) {
+  if (!key) return "";
+  const sel = (window.CSS && CSS.escape) ? CSS.escape(key) : key;
+  const el = document.querySelector('#gifs [data-gif="' + sel + '"]');
+  return el ? el.textContent.replace(/\s+/g, "") : "";
+}
+
+const VWORD = { pass: "PASS", warn: "WARN", fail: "FAIL" };
+const VGLYPH = { pass: "✓", warn: "!", fail: "✕" };
+
+function buildFlow(flow) {
+  const v = flow.verdict || "warn";
+  const wrap = document.createElement("div");
+  wrap.className = "flow " + v;
+
+  const row = document.createElement("div");
+  row.className = "row";
+
+  const chev = document.createElement("span");
+  chev.className = "chev"; chev.textContent = "▶";
+  row.appendChild(chev);
+
+  const badge = document.createElement("span");
+  badge.className = "badge b-" + v; badge.textContent = VWORD[v] || v.toUpperCase();
+  row.appendChild(badge);
+
+  const name = document.createElement("span");
+  name.className = "name"; name.textContent = flow.name || "Flow";
+  row.appendChild(name);
+
+  const sumInline = document.createElement("span");
+  sumInline.className = "summary-inline"; sumInline.textContent = flow.summary || "";
+  row.appendChild(sumInline);
+  wrap.appendChild(row);
+
+  const content = document.createElement("div");
+  content.className = "content";
+
+  if (flow.summary) {
+    const sf = document.createElement("div");
+    sf.className = "summary-full"; sf.textContent = flow.summary;
+    content.appendChild(sf);
+  }
+
+  const b64 = getGif(flow.gif);
+  if (flow.gif) {
+    if (b64) {
+      const frame = document.createElement("div");
+      frame.className = "gif-frame";
+      const img = document.createElement("img");
+      img.loading = "lazy"; img.alt = flow.name || "flow";
+      img.src = "data:image/gif;base64," + b64;
+      frame.appendChild(img);
+      const cap = document.createElement("div");
+      cap.className = "cap"; cap.textContent = flow.gif + ".gif — one frame per step";
+      frame.appendChild(cap);
+      content.appendChild(frame);
+    } else {
+      const miss = document.createElement("div");
+      miss.className = "gif-missing";
+      miss.textContent = "GIF “" + flow.gif + "” not embedded — run embed-qa-gifs.sh";
+      content.appendChild(miss);
+    }
+  }
+
+  if (flow.steps && flow.steps.length) {
+    const steps = document.createElement("div");
+    steps.className = "steps";
+    flow.steps.forEach((s) => {
+      const sv = s.result || "pass";
+      const step = document.createElement("div");
+      step.className = "step";
+      const g = document.createElement("div");
+      g.className = "glyph " + sv; g.textContent = VGLYPH[sv] || "·";
+      step.appendChild(g);
+      const col = document.createElement("div");
+      const doEl = document.createElement("div");
+      doEl.className = "do"; doEl.textContent = s.do || "";
+      col.appendChild(doEl);
+      if (s.expect) {
+        const ex = document.createElement("div");
+        ex.className = "expect"; ex.innerHTML = "<b>expect</b> ";
+        ex.appendChild(document.createTextNode(s.expect));
+        col.appendChild(ex);
+      }
+      if (s.note) {
+        const nt = document.createElement("div");
+        nt.className = "note"; nt.textContent = "→ " + s.note;
+        col.appendChild(nt);
+      }
+      step.appendChild(col);
+      steps.appendChild(step);
+    });
+    content.appendChild(steps);
+  }
+
+  if (flow.notes) {
+    const nb = document.createElement("div");
+    nb.className = "body"; nb.innerHTML = flow.notes;
+    content.appendChild(nb);
+  }
+
+  if (flow.fix) {
+    const fx = document.createElement("div");
+    fx.className = "fix"; fx.innerHTML = flow.fix;
+    content.appendChild(fx);
+  }
+
+  wrap.appendChild(content);
+  row.addEventListener("click", () => wrap.classList.toggle("open"));
+  return wrap;
+}
+
+/* header: derive verdict counts + stats from FLOWS so they never drift */
+(function renderHeader() {
+  const n = { pass: 0, warn: 0, fail: 0 };
+  FLOWS.forEach((f) => { n[f.verdict] = (n[f.verdict] || 0) + 1; });
+  const total = FLOWS.length;
+
+  document.getElementById("intro-title").textContent = TITLE + " — QA pass";
+  document.title = TITLE + " — QA Report";
+  document.querySelector("#topbar h1").textContent = TITLE + " · QA pass";
+
+  const parts = [];
+  parts.push('<span class="ok">' + n.pass + " passed</span>");
+  if (n.warn) parts.push('<span class="warn">' + n.warn + " warned</span>");
+  if (n.fail) parts.push('<span class="bad">' + n.fail + " failed</span>");
+  document.getElementById("verdict-line").innerHTML =
+    total + " flow" + (total === 1 ? "" : "s") + " · " + parts.join(" · ");
+
+  const stats = [
+    { b: total, l: "flows verified", c: "" },
+    { b: n.pass, l: "passed", c: "ok" },
+  ];
+  if (n.warn) stats.push({ b: n.warn, l: "warned / skipped", c: "warn" });
+  if (n.fail) stats.push({ b: n.fail, l: "failed", c: "bad" });
+  document.getElementById("stat-row").innerHTML = stats
+    .map((s) => '<div class="stat"><b class="' + s.c + '">' + s.b + "</b>" + s.l + "</div>")
+    .join("");
+})();
+
+const flowsEl = document.getElementById("flows");
+FLOWS.forEach((f) => flowsEl.appendChild(buildFlow(f)));
+
+const allFlows = () => flowsEl.querySelectorAll(".flow");
+document.getElementById("btn-expand-all").addEventListener("click", () => {
+  allFlows().forEach((n) => n.classList.add("open"));
+});
+document.getElementById("btn-collapse").addEventListener("click", () => {
+  allFlows().forEach((n) => n.classList.remove("open"));
+});
+/* open everything by default so the report reads as a scrollable page */
+allFlows().forEach((n) => n.classList.add("open"));
+</script>
 </body>
 </html>

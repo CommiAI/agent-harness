@@ -8,8 +8,12 @@
 
 ### Report
 
+The QA report is an inline artifact in the task directory — open it from the **Artifacts tab** of the sidebar (or the cloud permalink below):
+
 ```text
-qa-report/index.html
+.humanlayer/tasks/{task-slug}/qa-report.html
 ```
+
+<paste the cloud permalink captured from the hook response after writing/embedding>
 
 <if an approval gate is declared in .claude/qa.md, append: "Awaiting your review before this is closed out.">
