@@ -4,6 +4,7 @@
 - Adding dependencies usually does not goes through proper cli command, hence does not get latest version
 - Instead of manual RPI, test long running workflow + code review style implementation
 - Comtemplate if excalidraw hot reload multi agent canvas collaboration is needed
+- Generated video explainer got visual issues misalignment
 
 ## Reflect problem logs
 1. After system architecture, define end to end wiring contract
