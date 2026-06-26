@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{{TITLE}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --cobalt:#1E4FD8; --ink:#0F1B33; --slate:#5B6472; --gold:#C9A24B;
+    --canvas:#FFFFFF; --tint:rgba(30,79,216,0.045); --border:rgba(30,79,216,0.18);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Inter",system-ui,sans-serif;color:var(--ink);background:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:980px;margin:0 auto;padding:48px 28px 72px}
+  header.bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:40px}
+  .wordmark{font-family:"Space Grotesk";font-weight:700;font-size:26px;letter-spacing:.01em;color:var(--ink)}
+  /* language toggle (delete this block + the <script> + every .ms span for single-language) */
+  .lang{display:inline-flex;border:1.5px solid var(--border);border-radius:100px;padding:3px;background:#fff}
+  .lang button{font-family:"Space Grotesk";font-weight:600;font-size:12px;letter-spacing:.08em;color:var(--slate);
+    background:transparent;border:0;cursor:pointer;padding:6px 14px;border-radius:100px;transition:all .15s}
+  .lang button.active{background:var(--cobalt);color:#fff}
+  /* bilingual text: EN shown by default; second-language copy revealed via body.lang-ms.
+     NOTE the body class is `lang-ms`, NOT `ms` — naming it `ms` makes `.ms{display:none}`
+     match <body> and blank the whole page. Keep them distinct. */
+  .ms{display:none}
+  body.lang-ms .en{display:none}
+  body.lang-ms .ms{display:revert}
+  .eyebrow{font-family:"Space Grotesk";font-weight:600;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--cobalt)}
+  .accent-line{width:60px;height:4px;border-radius:2px;background:var(--cobalt);margin:14px 0 18px}
+  h1{font-family:"Space Grotesk";font-weight:700;font-size:clamp(30px,5vw,46px);line-height:1.08;letter-spacing:-.02em;color:var(--ink)}
+  .lede{margin-top:16px;font-size:18px;color:var(--slate);max-width:680px}
+  .player{margin:34px 0 0;border:1.5px solid var(--cobalt);border-radius:16px;overflow:hidden;box-shadow:0 30px 70px -30px rgba(15,27,51,.32);background:#000}
+  .player video{display:block;width:100%;height:auto}
+  .feat-head{margin:52px 0 20px;font-family:"Space Grotesk";font-weight:600;font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--slate)}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media(max-width:760px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--tint);border:1.5px solid var(--border);border-radius:14px;padding:24px 22px}
+  .num{font-family:"Space Grotesk";font-weight:700;font-size:15px;color:#fff;background:var(--cobalt);width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+  .card h3{font-family:"Space Grotesk";font-weight:600;font-size:19px;color:var(--ink);line-height:1.25}
+  .card p{margin-top:12px;font-size:15px;color:var(--slate)}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--border);position:relative}
+  footer::before{content:"";position:absolute;top:-1px;left:0;width:64px;height:2px;background:var(--gold)}
+  footer p{font-family:"Space Grotesk";font-weight:600;font-size:14px;letter-spacing:.02em;color:var(--ink)}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="bar">
+      <div class="wordmark">{{WORDMARK}}</div>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-lang="en" class="active">EN</button>
+        <button type="button" data-lang="ms">BM</button>
+      </div>
+    </header>
+
+    <div class="eyebrow"><span class="en">{{EYEBROW_EN}}</span><span class="ms">{{EYEBROW_MS}}</span></div>
+    <div class="accent-line"></div>
+    <h1>{{TITLE}}</h1>
+    <p class="lede">
+      <span class="en">{{LEDE_EN}}</span>
+      <span class="ms">{{LEDE_MS}}</span>
+    </p>
+
+    <div class="player">
+      <video controls preload="metadata" poster="data:image/jpeg;base64,{{POSTER_BASE64}}">
+        <source src="data:video/mp4;base64,{{VIDEO_BASE64}}" type="video/mp4" />
+      </video>
+    </div>
+
+    <div class="feat-head"><span class="en">What's inside</span><span class="ms">Apa yang ditunjukkan</span></div>
+    <div class="grid">
+      <div class="card">
+        <div class="num">1</div>
+        <h3><span class="en">{{CARD1_TITLE_EN}}</span><span class="ms">{{CARD1_TITLE_MS}}</span></h3>
+        <p>
+          <span class="en">{{CARD1_BODY_EN}}</span>
+          <span class="ms">{{CARD1_BODY_MS}}</span>
+        </p>
+      </div>
+      <div class="card">
+        <div class="num">2</div>
+        <h3><span class="en">{{CARD2_TITLE_EN}}</span><span class="ms">{{CARD2_TITLE_MS}}</span></h3>
+        <p>
+          <span class="en">{{CARD2_BODY_EN}}</span>
+          <span class="ms">{{CARD2_BODY_MS}}</span>
+        </p>
+      </div>
+      <div class="card">
+        <div class="num">3</div>
+        <h3><span class="en">{{CARD3_TITLE_EN}}</span><span class="ms">{{CARD3_TITLE_MS}}</span></h3>
+        <p>
+          <span class="en">{{CARD3_BODY_EN}}</span>
+          <span class="ms">{{CARD3_BODY_MS}}</span>
+        </p>
+      </div>
+    </div>
+
+    <footer>
+      <p>{{WORDMARK}}</p>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var body = document.body;
+      var buttons = document.querySelectorAll(".lang button");
+      buttons.forEach(function (b) {
+        b.addEventListener("click", function () {
+          var lang = b.getAttribute("data-lang");
+          body.classList.toggle("lang-ms", lang === "ms");
+          document.documentElement.lang = lang === "ms" ? "ms" : "en";
+          buttons.forEach(function (x) { x.classList.toggle("active", x === b); });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
