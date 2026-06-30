@@ -9,3 +9,10 @@
 ## Reflect problem logs
 1. After system architecture, define end to end wiring contract
 2. Before QA test, ensure that migration environment etc before parallel subagent QA
+
+## [Wiki skill] 
+- Better html styling
+- Development how to contribute section should be cleaner
+- Patterns and architecture diagram at the top of each page for easier skim through
+- Commit hash tracking for each iteration check the diff 
+- Should check the autowiki cause formatting and structure wise is missing a bit
