@@ -10,6 +10,9 @@
 1. After system architecture, define end to end wiring contract
 2. Before QA test, ensure that migration environment etc before parallel subagent QA
 
+## [QA Skill]
+- Use subagent to do QA instead
+
 ## [Wiki skill] 
 - Better html styling
 - Development how to contribute section should be cleaner
