@@ -1,6 +1,6 @@
 ---
 name: loomstyle-demo
-description: Turn app screen-recordings into a narrated, self-contained Loom-style HTML showcase for non-technical stakeholders (a boss, a customer). Records flows with agent-browser, narrates with product-launch-video, wraps in one shareable .html.
+description: Turn app screen-recordings into a narrated, self-contained Loom-style HTML showcase for non-technical stakeholders (a boss, a customer).
 disable-model-invocation: true
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: reflect-on-task
-description: Reflect on a completed task. Pulls per-phase timing and the post-implementation message trail from HumanLayer, reads the task's own design artifacts off disk, and grades how well the PRD, TDD, and outline predicted what was actually built. Use after a task/PR is merged, or when asked to reflect on a task, analyze a task session, run a retro, or grade the design docs.
+description: Reflect on a completed task, grading how well the PRD, TDD, and outline predicted what was actually built. Use after a task/PR is merged, or when asked to reflect on a task, analyze a task session, run a retro, or grade the design docs.
 ---
 
 # Reflect on Task
