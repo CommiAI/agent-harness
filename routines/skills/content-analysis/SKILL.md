@@ -13,11 +13,4 @@ For the batch, identify:
 4. Shifts — what is different now compared with the last batch?
 5. Opportunities — for each pattern, note ideas, possibilities, or follow-ups worth pursuing.
 
-Generate the findings as an HTML report and save it to a file (e.g. `content-analysis-report.html`). The report should include:
-
-- A short summary of the batch
-- The top trends, each with how strong it is and a concrete example
-- Shifts versus the previous batch
-- Opportunities and ideas
-
-Present the report as a one-off artifact for viewing. If the batch is empty, say so briefly.
+Generate the findings as an HTML report and save it to a file (e.g. `content-analysis-report.html`): a short summary of the batch, then each finding above with its strength and a concrete example. Present the report as a one-off artifact for viewing. If the batch is empty, say so briefly.

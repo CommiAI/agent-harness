@@ -1,6 +1,6 @@
 ---
 name: email-triage
-description: Daily inbox triage — review new and unread emails, categorize them, summarize, draft replies for the ones that need them, and set the rest aside under a Waiting Analysis label. Use when the user wants to triage, review, or clean up their inbox.
+description: Daily inbox triage — categorize, summarize, and draft replies for new and unread emails. Use when the user wants to triage, review, or clean up their inbox.
 ---
 
 Review inbox for new and unread emails. For each email:
