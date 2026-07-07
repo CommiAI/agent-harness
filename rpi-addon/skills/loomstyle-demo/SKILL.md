@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 The deliverable is **one shareable `.html` file** — Loom-style — that wraps a short narrated walkthrough of an app for someone non-technical. The **footage is the hero**; copy, captions, and chrome stay out of its way. The page is **self-contained**: it plays by double-click with no external files.
 
-Three things to get right, in order — clean footage → a narrated video → the page — plus one rule that governs all three.
+Four steps, in order — clean footage → tight clips → a narrated video → the page — plus one rule that governs them all.
 
 ## The plain rule (governs every script line, caption, and card)
 

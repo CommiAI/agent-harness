@@ -1,22 +1,13 @@
 ---
 name: reflect-on-task
-description: Reflect on a completed task, grading how well the PRD, TDD, and outline predicted what was actually built. Use after a task/PR is merged, or when asked to reflect on a task, analyze a task session, run a retro, or grade the design docs.
+description: Grade how well a completed task's PRD, TDD, and outline predicted what was actually built. Use after a task/PR is merged, or when asked to run a retro or grade the design docs.
 ---
 
 # Reflect on Task
 
 You analyze a **completed task** (one merged PR == one HumanLayer task == a chain of
 sessions) and produce **one report** that answers: *did the design hold up, and what should
-I think harder about next time?*
-
-The report has three sections:
-1. **Time by phase** — share of active time per phase.
-2. **Iterations after implementation** — each fix/change made once coding began: problem, what changed, why it wasn't caught in design.
-3. **Design-artifact report card** — a grade for the PRD, TDD, and Outline against what was actually built.
-
-The skill runs on the same task, so the **design artifacts are read directly from disk**. The
-only things the dump pulls from HumanLayer are what you *can't* get from disk: **per-phase
-timing** and **the messages after implementation began**.
+I think harder about next time?* The workflow below builds its three sections in order.
 
 ## Getting Started
 

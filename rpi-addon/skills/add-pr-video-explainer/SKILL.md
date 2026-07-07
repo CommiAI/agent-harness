@@ -1,6 +1,6 @@
 ---
 name: add-pr-video-explainer
-description: Extension of rpi:describe-pr — builds a narrated technical walkthrough video of a PR with hyperframes, from describe-pr's artifacts (diff, pr-walkthrough.html, pr-description.md) and the rpi-addon:qa GIFs. Invoked alongside describe-pr.
+description: Extension of rpi:describe-pr — builds a narrated technical walkthrough video of the PR with hyperframes, from describe-pr's artifacts and the rpi-addon:qa GIFs. Invoked alongside describe-pr.
 ---
 
 # Create PR Video Explainer

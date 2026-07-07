@@ -1,6 +1,6 @@
 ---
 name: wiki
-description: Generate an AutoWiki for a codebase — a tree of Markdown files centered on core architecture, subsystem architecture, and recurring engineering patterns. Use when asked to generate a wiki, document this repo, or build a codebase wiki.
+description: Generate an AutoWiki — an architecture-first codebase wiki. Use when asked to generate a wiki or document a repo.
 ---
 
 # AutoWiki
@@ -11,7 +11,7 @@ This scheme is **architecture-first**. It leads with the three things a develope
 
 1. **Core architecture** — the top-level design and how data and control flow through it.
 2. **Subsystem architecture** — each major subsystem, on its own page.
-3. **Patterns** — the recurring conventions the code relies on (error handling, real-time / unidirectional data flow such as SSE, concurrency, state management, …), each with its canonical implementation and how to follow it.
+3. **Patterns** — the recurring conventions the code relies on, each with its canonical implementation and how to follow it.
 
 **CRITICAL:**
 - Ground every claim in the real source. Reference concrete files, with line numbers where precise. Never invent a component, endpoint, or pattern that isn't in the code.
@@ -68,7 +68,7 @@ Set the output dir. Record `git rev-parse HEAD` and the date for `index.md`.
 **Done when:** structural and semantic facts are captured, the candidate subsystem list and pattern-signal list are written down, and the commit hash is recorded.
 
 ### 2. Plan
-From what Survey found, decide the concrete page set: which subsystems warrant their own page (group thin ones; don't manufacture pages for sparse code) and which patterns are genuinely recurring. The patterns are whatever the code actually relies on — error handling and real-time/unidirectional data flow (SSE) are common examples, not required pages; only create a pattern page when Survey found that pattern in use. Drop any page that would have no real content rather than padding it.
+From what Survey found, decide the concrete page set: which subsystems warrant their own page (group thin ones) and which patterns are genuinely recurring — only create a pattern page when Survey found that pattern in use. Drop any page that would have no real content rather than padding it.
 
 **Done when:** `index.md` exists with a table of contents naming every page that will be generated.
 

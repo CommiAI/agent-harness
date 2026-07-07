@@ -1,6 +1,6 @@
 ---
 name: ticket-curation
-description: Curate a product development ticket through a 10-section template so the thinking is finished before development starts. Use when the user wants to draft a new ticket, refine an existing draft, turn a feature idea or bug report into a ticket, set up a ticket template, or groom a backlog item.
+description: Curate a product development ticket through a 10-section template so the thinking is finished before development starts. Use when the user wants to turn a feature idea or bug report into a ticket, refine or groom an existing draft, or set up a ticket template.
 ---
 
 # Ticket Curation

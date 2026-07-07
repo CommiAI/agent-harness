@@ -7,17 +7,14 @@ description: quality assurance after implementation of a structure plan or struc
 
 You are the **orchestrator** of an independent QA pass over an implementation produced by `rpi:implement-plan` or `rpi:implement-outline`. You never drive the app yourself: every flow is verified by a **driver subagent**, every fix is made by `rpi:implementer-agent`. You hold only the flow list, the verdicts, and the report — the browser noise and screenshots stay in the subagents' contexts, not yours.
 
-**CRITICAL**:
-- This skill runs AFTER implementation — it is a post-implementation gate.
-- Read **`.claude/qa.md`** in the target repo for project-specific quality assurance instructions, and pass the relevant rules into every driver prompt.
-- Everything this skill produces lives in the **task directory**: set `TASK_DIR=.humanlayer/tasks/{task-slug}` from where the outline/plan lives — the HumanLayer artifact system, not a stray folder at the repo root. The artifact system is **flat** (no nested folders): evidence is one `$TASK_DIR/qa-<flow>.gif` per flow, beside the report at `$TASK_DIR/qa-report.html`. `rpi-addon:add-pr-video-explainer` reuses those GIFs from this same directory.
+**CRITICAL**: everything this skill produces lives in the **task directory**: set `TASK_DIR=.humanlayer/tasks/{task-slug}` from where the outline/plan lives — the HumanLayer artifact system, not a stray folder at the repo root. The artifact system is **flat** (no nested folders): evidence is one `$TASK_DIR/qa-<flow>.gif` per flow, beside the report at `$TASK_DIR/qa-report.html`. `rpi-addon:add-pr-video-explainer` reuses those GIFs from this same directory.
 
 ## Getting Started
 
 When invoked:
 1. Confirm an implementation has just completed (this is a post-implementation gate)
 2. Read the structure outline or plan to understand the phases; note its task directory and set `TASK_DIR`
-3. Read `.claude/qa.md` in the target project
+3. Read **`.claude/qa.md`** in the target repo for project-specific QA rules
 4. Enumerate the real user flows to be verified for the scope of this pass, each as: **steps**, **expected outcome**, and **where to verify** the side effect. This list is the contract for the whole pass — every flow ends the run as passed, auto-fixed, or explicitly skipped with a reason.
 5. Follow the workflow below
 
@@ -29,7 +26,7 @@ Launch a `general-purpose` subagent via the Agent tool for each flow — in para
 
 - the flow's **steps**, **expected outcome**, and **where to verify**, plus the relevant `.claude/qa.md` rules
 - **how to drive**: use the **agent-browser** skill for ALL browser work
-- **how to capture evidence**: screenshot each meaningful step into a scratch dir (`FRAMES=$(mktemp -d)`, files `$FRAMES/<flow>-NN-<step>.png`) — each frame a deliberate checkpoint mapping to one step and assertion — then stitch them with **ImageMagick** (`magick`) into `$TASK_DIR/qa-<flow>.gif`, flat in the task directory, named for the flow. That `qa-<flow>` basename is the `gif:` key the report and `embed-qa-gifs.sh` use. The per-step PNGs never land in the task directory.
+- **how to capture evidence**: screenshot each meaningful step into a scratch dir (`FRAMES=$(mktemp -d)`, files `$FRAMES/<flow>-NN-<step>.png`) — each frame a deliberate checkpoint mapping to one step and assertion — then stitch them with **ImageMagick** (`magick`) into `$TASK_DIR/qa-<flow>.gif`. That `qa-<flow>` basename is the `gif:` key the report and `embed-qa-gifs.sh` use. The per-step PNGs never land in the task directory.
 - **what to return**: a verdict (`pass`/`fail`), the ordered steps each as `do` / `expect` / `result`, notes, the GIF path, and — on failure — a diagnosis of the defect (symptom, suspected files/lines)
 
 The driver observes and reports; it never fixes.
@@ -40,7 +37,7 @@ For each failed flow: hand the driver's diagnosis to an `rpi:implementer-agent` 
 
 ### 3. Build the HTML report as an inline artifact
 
-The report is a **self-contained inline HumanLayer artifact** written flat into the task directory (like `pr-walkthrough.html`), beside its `qa-<flow>.gif` evidence — there is no `qa-report/` folder. Because it renders in the cloud where relative paths don't resolve, the flow GIFs are **base64-embedded** by a helper script — you never hand-paste base64.
+The report is a **self-contained inline HumanLayer artifact** (like `pr-walkthrough.html`). Because it renders in the cloud where relative paths don't resolve, the flow GIFs are **base64-embedded** by a helper script — you never hand-paste base64.
 
 1. Copy the template into the task directory:
 
